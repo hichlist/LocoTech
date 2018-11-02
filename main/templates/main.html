@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>ЛокоТех</h1>
+        </div>
+    </div>
+
+</div>
+    <div class="row">
+        <div class="col-sm-2">
+            <h4>Филиалы:</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Локомотивы:</h4>
+        </div>
+        <div class="col-sm-8">
+            <h4>Выручка:</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+
+            {% if not selected_branches %}
+            Ничего не выбрано
+            {% endif %}
+
+            {% for b in selected_branches %}
+                {{ b }} <br>
+            {% endfor %}
+        </div>
+        <div class="col-sm-2">
+
+            {% if not selected_loco %}
+            Ничего не выбрано
+            {% endif %}
+
+            {% for l in selected_loco %}
+                {{ l }} <br>
+            {% endfor %}
+        </div>
+        <div class="col-sm-8">
+            <span class="gain">
+                {% for g in gain %}
+                {{ g }},
+                {% endfor %}
+            </span>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            {% for y in year %}
+            {{ y }}
+            {% endfor %}
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+
+    <br>
+    <form name="form" class="form" method="get">
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-3">
+                    <select multiple class="form-control col-sm-3" name="branch">
+
+                        {% for branch in branches %}
+                            <option>{{ branch.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <select multiple class="form-control col-sm-3" name="loco">
+
+                        {% for loco in locomotives %}
+                            <option>{{ loco.series }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <select multiple class="form-control col-sm-3" name="year">
+
+                        {% for y in year %}
+                            <option>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input class="btn btn-default btn-lg btn-block" type="submit" value="OK">
+                </div>
+            </div>
+
+        </fieldset>
+
+    </form>
+    <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+
+{% endblock %}
